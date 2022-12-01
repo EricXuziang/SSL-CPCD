@@ -9,7 +9,7 @@ import torchvision
 from torchvision.datasets import DatasetFolder
 from torchvision.models.resnet import resnet50
 
-from utils import (AverageMeter, Logger, Memory, ModelCheckpoint,
+from utils_new import (AverageMeter, Logger, Memory, ModelCheckpoint,
                    NoiseContrastiveEstimator, Progbar, pil_loader)
 
 device = torch.device('cuda:0')
