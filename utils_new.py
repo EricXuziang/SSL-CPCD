@@ -291,39 +291,17 @@ class NoiseContrastiveEstimator():
 
             negative = memory.return_random(size=negative_nb, index=[index[i]])
             negative = torch.Tensor(negative).to(self.device).detach()
-            #
+            
             image_to_modification_similarity = cos(F.normalize(original_features[None, i, :]), F.normalize(path_features[None, i, :]))/temp
             matrix_of_similarity = (cos(F.normalize(path_features[None, i, :]), F.normalize(negative)))
-
-            
+            # angular margin
             angle = np.arccos(matrix_of_similarity.detach().numpy())
             matrix_of_similarity_new = torch.from_numpy(np.cos(angle+m)/temp).cuda()
             
 
             similarities = torch.cat((image_to_modification_similarity, matrix_of_similarity_new))
             loss += criterion(similarities[None, :], torch.tensor([0]).to(self.device))
-            '''
-            cosine = matrix_of_similarity
-            m = 0.5
-            s = 30
-            # arc distance
-            sin_m = math.sin(m)
-            cos_m = math.cos(m)
-            th = math.cos(math.pi - m)
-            mm = math.sin(math.pi - m) * m
             
-            sine = torch.sqrt((1.0 - torch.pow(cosine, 2)).clamp(0, 1))
-        
-            phi = cosine * cos_m - sine * sin_m
-            phi = torch.where(cosine > th, phi, cosine - mm)
-            print(phi)
-            one_hot = torch.zeros(cosine.size(), device='cuda')
-            print(cosine.size())
-            one_hot.scatter_(1, label.view(-1, 1).long(), 1)
-            output = (one_hot * phi) + ((1.0 - one_hot) * cosine)
-            output *= s
-            loss += criterion(output[None, :], torch.tensor([0]).to(self.device))
-            '''
         return loss / original_features.shape[0]
 
 
