@@ -1,1 +1,1 @@
-# Colitis_Classification
+# TMI-CPCD
