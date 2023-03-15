@@ -162,7 +162,7 @@ memory.initialize(net, train_loader)
 checkpoint = ModelCheckpoint(mode='min', directory=checkpoint_dir)
 noise_contrastive_estimator = NoiseContrastiveEstimator(device)
 logger = Logger(log_filename)
-Lambda=0.3
+Lambda=0.5
 loss_weight = 0.5
 num_clusters=3
 num_iters=10
