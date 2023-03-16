@@ -14,7 +14,7 @@ from utils_new import (AverageMeter, Logger, Memory, ModelCheckpoint,
 
 device = torch.device('cuda:0')
 data_dir = r'data_pre/train'
-negative_nb = 300  # number of negative examples in NCE
+negative_nb = 3000  # number of negative examples in NCE
 lr = 0.001
 checkpoint_dir = 'jigsaw_models'
 log_filename = 'pretraining_log_jigsaw'
@@ -164,7 +164,7 @@ noise_contrastive_estimator = NoiseContrastiveEstimator(device)
 logger = Logger(log_filename)
 Lambda=0.5
 loss_weight = 0.5
-num_clusters=3
+num_clusters=4
 num_iters=10
 
 for epoch in range(2000):
@@ -192,8 +192,8 @@ for epoch in range(2000):
 
         q0 = nn.functional.normalize(output[0], dim=1)
         q1 = nn.functional.normalize(output[1], dim=1)
-        loss_cld= Lambda*grouping(q0, q1, T=0.4)
-        loss= loss+loss_cld
+        loss_cld= grouping(q0, q1, T=0.4)
+        loss= (1-Lambda) * loss + Lambda * loss_cld
         loss.backward()
         optimizer.step()
 
