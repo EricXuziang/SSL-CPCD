@@ -223,20 +223,20 @@ if __name__ == '__main__':
     best_valid_acc1=0.0
     best_valid_acc2=0.0
     
-    max_epoch=500
+    max_epoch= 200
     lr=1e-4
-    model_name='resnet50_500'
+    model_name='resnet50_cpcd'
 
     model = Network()
-    net_weight = 'epoch_1980'
+    net_weight = 'jigsaw_models/epoch_2000'
     model.load_state_dict(torch.load(net_weight))
 
     model=Net(model)
     print(model)
 
 
-    data_dir_train=r'data_newnew/train'
-    data_dir_test=r'data_newnew/test'
+    data_dir_train=r'data_cla/train'
+    data_dir_test=r'data_cla/test'
     input_size = 224
     
     train_loader,val_loader= loaddata(data_dir=data_dir_train, batch_size=32, set_name='train', shuffle=True)
