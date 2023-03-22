@@ -129,18 +129,13 @@ def KMeans(x, K=10, Niters=10, verbose=False):
 
     return cl, c
 def grouping(features_groupDis1, features_groupDis2, T):
-    # print(features_groupDis1.size())
+    
     criterion = nn.CrossEntropyLoss().cuda()
     # K-way normalized cuts or k-Means. Default: k-Means
     
     cluster_label1, centroids1 = KMeans(features_groupDis1, K=num_clusters, Niters=num_iters)
     cluster_label2, centroids2 = KMeans(features_groupDis2, K=num_clusters, Niters=num_iters)
         
-    #else:
-    #    cluster_label1, centroids1 = spectral_clustering(features_groupDis1, K=args.k_eigen,
-    #                clusters=args.clusters, Niters=args.num_iters)
-    #   cluster_label2, centroids2 = spectral_clustering(features_groupDis2, K=args.k_eigen,
-    #              clusters=args.clusters, Niters=args.num_iters)
 
     # group discriminative learning
     affnity1 = torch.mm(features_groupDis1, centroids2.t())
