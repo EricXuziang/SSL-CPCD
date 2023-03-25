@@ -18,8 +18,27 @@ from torchvision import datasets, models, transforms
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score
 from sklearn.metrics import plot_confusion_matrix
 from torchvision.models.resnet import resnet50
+import argparse
 
+def get_argparser():
+    parser = argparse.ArgumentParser()
 
+    parser.add_argument("--data_dir_train", type=str, default='data_cla/train',
+                        help="path to Dataset")
+    parser.add_argument("--data_dir_test", type=str, default='data_cla/test',
+                        help="path to Dataset")
+    parser.add_argument("--input_size", type=str, default=224,
+                        help="input size")
+    parser.add_argument("--max_epoch", type=str, default=200,
+                        help="epoc")
+    parser.add_argument("--lr", type=str, default=1e-4,
+                        help="lr")
+    parser.add_argument("--model_name", type=str, default='resnet50_cpcd',
+                        help="name")
+    parser.add_argument("--net_weight", type=str, default='./SSL-CPCD/jigsaw_models/epoch_2000',
+                        help="ssl weight")
+    parser.add_argument("--save_dir", type=str, default='model',
+                        help="save path")
 
 random_seed= 42
 random.seed(random_seed)
@@ -223,21 +242,11 @@ if __name__ == '__main__':
     best_valid_acc1=0.0
     best_valid_acc2=0.0
     
-    max_epoch= 200
-    lr=1e-4
-    model_name='resnet50_cpcd'
 
     model = Network()
-    net_weight = 'jigsaw_models/epoch_2000'
     model.load_state_dict(torch.load(net_weight))
-
     model=Net(model)
     print(model)
-
-
-    data_dir_train=r'data_cla/train'
-    data_dir_test=r'data_cla/test'
-    input_size = 224
     
     train_loader,val_loader= loaddata(data_dir=data_dir_train, batch_size=32, set_name='train', shuffle=True)
     
@@ -246,12 +255,10 @@ if __name__ == '__main__':
 
     criterion = torch.nn.CrossEntropyLoss()
     
-    momentum = 0.9
     optimizer = optim.Adam(model.parameters(), lr=lr,
                           weight_decay=0.0004)
     model = model.to(device)
     criterion = criterion.to(device)
-    #scheduler = StepLR(optimizer, step_size=opt.lr_step, gamma=opt.lr_decay)
 
     # start = time.time()
     from torch.utils.tensorboard import SummaryWriter
@@ -276,7 +283,6 @@ if __name__ == '__main__':
             best_valid_acc1 = valid_acc_1
             best_valid_acc2 =  valid_acc_2
             
-            save_dir =  r'model'
             os.makedirs(save_dir, exist_ok=True)
             save_model(model, save_dir, model_name, epoch)
             print('save model')
