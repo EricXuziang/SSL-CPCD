@@ -17,47 +17,10 @@ def get_backbone(name, pretrained=True):
         backbone = models.resnet34(pretrained=pretrained)
     elif name == 'resnet50':
         backbone = models.resnet50(pretrained=False)
-        resnet50_dict='./resnet50-19c8e357.pth'
-        backbone.load_state_dict(torch.load(resnet50_dict))
-
-        # PIRL
-        #resnet50_dict_cld='./epoch_1992_cld'
-        #backbone.load_state_dict(torch.load(resnet50_dict_cld), strict=False)
-
-        # PIRL-cld
-        #resnet50_dict_cld='./epoch_1996'
-        #backbone.load_state_dict(torch.load(resnet50_dict_cld), strict=False)
-
-        # sim-dcl
-        #resnet50_dict_dcl='./model_trial_dcl.ckpt'
-        #backbone.load_state_dict(torch.load(resnet50_dict_dcl), strict=False)
-
-        # sim
-        #resnet50_dict_sim='./model_trial_res50.ckpt'
-        #backbone.load_state_dict(torch.load(resnet50_dict_sim), strict=False)
-
+        # ssl_cpcd
+        resnet50_dict_cld='./epoch_2000'
+        backbone.load_state_dict(torch.load(resnet50_dict_cld), strict=False)
         print('load pretrained model sucessful (ssl_cpcd)')
-    elif name == 'resnet50_cbam':
-        import resnet_cbam as resnet_cbam
-        backbone=resnet_cbam.resnet50_cbam(pretrained=False)
-
-        resnet50_dict='./resnet50-19c8e357.pth'
-        backbone.load_state_dict(torch.load(resnet50_dict), strict=False)
-
-        # PIRL-CLD
-        #resnet50_dict_cld='./epoch_1992_cld'
-        #backbone.load_state_dict(torch.load(resnet50_dict_cld), strict=False)
-
-        # sim-dcl
-        #resnet50_dict_dcl='./model_trial_dcl.ckpt'
-        #backbone.load_state_dict(torch.load(resnet50_dict_dcl), strict=False)
-
-        # sim
-        #resnet50_dict_sim='./model_trial_res50.ckpt'
-        #backbone.load_state_dict(torch.load(resnet50_dict_sim), strict=False)
-
-        print('load pretrained model sucessful (res50_cbam)')
-
     elif name == 'resnet101':
         backbone = models.resnet101(pretrained=pretrained)
     elif name == 'resnet152':
@@ -167,7 +130,7 @@ class Unet(nn.Module):
     """ U-Net (https://arxiv.org/pdf/1505.04597.pdf) implementation with pre-trained torchvision backbones."""
 
     def __init__(self,
-                 backbone_name='resnet50_cbam',
+                 backbone_name='resnet50',
                  pretrained=False,
                  encoder_freeze=False,
                  classes=21,
@@ -274,7 +237,7 @@ class Unet(nn.Module):
 if __name__ == "__main__":
 
     # simple test ru
-    net = Unet(backbone_name='resnet50_cbam', pretrained=False, classes=2)
+    net = Unet(backbone_name='resnet50', pretrained=False, classes=2)
 
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(net.parameters())
