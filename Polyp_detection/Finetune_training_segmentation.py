@@ -35,7 +35,7 @@ def main(args=None):
     # parser.add_argument('--csv_val', default=None, help='Path to file containing validation annotations (optional, see readme)')
     #resnet 50
     parser.add_argument('--depth', help='Resnet depth, must be one of 18, 34, 50, 101, 152', type=int, default=50)
-    parser.add_argument('--epochs', help='Number of epochs', type=int, default=200)
+    parser.add_argument('--epochs', help='Number of epochs', type=int, default=400)
     parser = parser.parse_args(args)
 
     # Create the data loaders
@@ -105,7 +105,7 @@ def main(args=None):
     retinanet.training = True
     optimizer = optim.Adam(retinanet.parameters(), lr=1e-5)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=3, verbose=True)
-    loss_hist = collections.deque(maxlen=500)
+    loss_hist = collections.deque(maxlen=400)
     retinanet.train()
     
     save_weights_folder = 'kvasir_polyp_{}_cpcd'.format(parser.depth)
