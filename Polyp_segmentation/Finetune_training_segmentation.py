@@ -50,7 +50,7 @@ def get_argparser():
     parser.add_argument("--download", action='store_true', default=False,
                         help="download datasets")
     # Deeplab Options
-    parser.add_argument("--model", type=str, default='resnet-Unet',
+    parser.add_argument("--model", type=str, default='SSL_CPCD',
                         choices=['SSL_CPCD'], help='model name')
 
     # if unet backbone
@@ -69,10 +69,10 @@ def get_argparser():
     parser.add_argument("--save_val_results", action='store_true', default=True,
                         help="save segmentation results to \"./results_polypGen\"")
     
-    parser.add_argument("--total_itrs", type=int, default=30e3,
-                        help="epoch number (default: 30k)")
-    parser.add_argument("--lr", type=float, default=0.01,
-                        help="learning rate (default: 0.01)")
+    parser.add_argument("--total_itrs", type=int, default=500,
+                        help="epoch number")
+    parser.add_argument("--lr", type=float, default=0.001,
+                        help="learning rate (default: 0.001)")
     parser.add_argument("--lr_policy", type=str, default='poly', choices=['poly', 'step'],
                         help="learning rate scheduler policy")
     parser.add_argument("--step_size", type=int, default=10000)
