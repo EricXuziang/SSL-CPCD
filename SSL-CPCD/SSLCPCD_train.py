@@ -61,7 +61,7 @@ class JigsawLoader(DatasetFolder):
 
 
 dataset = JigsawLoader(data_dir)
-train_loader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=16, num_workers=2)
+train_loader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=32, num_workers=2)
 
 
 class Network(nn.Module):
