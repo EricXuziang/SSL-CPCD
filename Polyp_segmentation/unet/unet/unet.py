@@ -18,7 +18,7 @@ def get_backbone(name, pretrained=True):
     elif name == 'resnet50':
         backbone = models.resnet50(pretrained=False)
         # ssl_cpcd
-        resnet50_dict_cld='./epoch_2000'
+        resnet50_dict_cld='./SSL-CPCD/jigsaw_models/epoch_2000'
         backbone.load_state_dict(torch.load(resnet50_dict_cld), strict=False)
         print('load pretrained model sucessful (ssl_cpcd)')
     elif name == 'resnet101':
