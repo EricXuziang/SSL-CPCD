@@ -98,7 +98,7 @@ def main(args=None):
     if use_gpu:
         retinanet = retinanet.cuda()
 
-    net_weight = 'jigsaw_models/epoch_2000'
+    net_weight = './SSL-CPCD/jigsaw_models/epoch_2000'
     retinanet .load_state_dict(torch.load(net_weight), strict=False)
     
     retinanet = torch.nn.DataParallel(retinanet).cuda()
