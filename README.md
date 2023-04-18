@@ -27,11 +27,8 @@
   </code></pre>
   ####  3. Test for each SSL-CPCD tasks
   <pre><code>
-  cd ./SSL-CPCD_test
-  python SSLCPCD_test.py
-  </code></pre>
-  #### 4. Test for each SSL-CPCD tasks (on unseen center)
-  <pre><code>
-  cd ./SSL-CPCD_test_generalisation
-  python SSLCPCD_test_generalisation.py
+  cd ./test
+  python test_classification.py
+  python test_detection.py
+  python test_segmentation.py
   </code></pre>
