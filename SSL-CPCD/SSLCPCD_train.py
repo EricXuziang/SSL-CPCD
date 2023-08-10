@@ -67,7 +67,7 @@ train_loader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=32,
 class Network(nn.Module):
     def __init__(self):
         super(Network, self).__init__()
-        self.network = resnet50(pretrained=True)
+        self.network = resnet50()
         self.network = torch.nn.Sequential(*list(self.network.children())[:-1])
         self.projection_original_features = nn.Linear(2048, 128)
         self.connect_patches_feature = nn.Linear(1152, 128)
