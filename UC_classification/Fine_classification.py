@@ -1,7 +1,7 @@
 from __future__ import print_function
 import os
 import torch
-from torch.utils import data
+from torch.utils import data, EarlyStopping
 import torch.nn.functional as F
 import torchvision
 import numpy as np
@@ -39,6 +39,7 @@ def get_argparser():
                         help="ssl weight")
     parser.add_argument("--save_dir", type=str, default='model',
                         help="save path")
+    parser.add_argument('--early-stopping', dest='early_stopping', action='store_true')
 
 random_seed= 42
 random.seed(random_seed)
@@ -129,6 +130,38 @@ def exp_lr_scheduler(optimizer, epoch, init_lr, lr_decay_epoch=20):
         param_group['lr'] = lr
 
     return optimizer
+    
+class EarlyStopping():
+    """
+    Early stopping to stop the training when the loss does not improve after
+    certain epochs.
+    """
+    def __init__(self, patience=20, min_delta=0):
+        """
+        :param patience: how many epochs to wait before stopping when loss is
+               not improving
+        :param min_delta: minimum difference between new loss and old loss for
+               new loss to be considered as an improvement
+        """
+        self.patience = patience
+        self.min_delta = min_delta
+        self.counter = 0
+        self.best_loss = None
+        self.early_stop = False
+    def __call__(self, val_loss):
+        if self.best_loss == None:
+            self.best_loss = val_loss
+        elif self.best_loss - val_loss > self.min_delta:
+            self.best_loss = val_loss
+            # reset counter if validation loss improves
+            self.counter = 0
+        elif self.best_loss - val_loss < self.min_delta:
+            self.counter += 1
+            print(f"INFO: Early stopping counter {self.counter} of {self.patience}")
+            if self.counter >= self.patience:
+                print('INFO: Early stopping')
+                self.early_stop = True
+
 
 def loaddata(data_dir, batch_size, set_name, shuffle):
     data_transforms = {
@@ -235,6 +268,10 @@ def epoch_time(start_time, end_time):
     return elapsed_mins, elapsed_secs
 
 if __name__ == '__main__':
+    
+    if args['early_stopping']:
+        print('INFO: Initializing early stopping')
+        early_stopping = EarlyStopping()
 
     device = torch.device("cuda")
     best_train_acc= 0.0
@@ -278,14 +315,18 @@ if __name__ == '__main__':
         valid_loss, valid_acc_1, valid_acc_2 = validate(model, val_loader, criterion, device)
     
         #save your checkpoint if best
+        if args['early_stopping']:
+            early_stopping(valid_loss)
+            if early_stopping.early_stop:
+                break
 
-        if  valid_acc_1 > best_valid_acc1:
-            best_valid_acc1 = valid_acc_1
-            best_valid_acc2 =  valid_acc_2
+        #if  valid_acc_1 > best_valid_acc1:
+        #    best_valid_acc1 = valid_acc_1
+        #    best_valid_acc2 =  valid_acc_2
             
-            os.makedirs(save_dir, exist_ok=True)
-            save_model(model, save_dir, model_name, epoch)
-            print('save model')
+        os.makedirs(save_dir, exist_ok=True)
+        save_model(model, save_dir, model_name, epoch)
+        print('save model')
 
         end_time = time.time()
 
