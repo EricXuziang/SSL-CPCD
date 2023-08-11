@@ -31,7 +31,7 @@ def get_argparser():
                         help="input size")
     parser.add_argument("--max_epoch", type=str, default=200,
                         help="epoc")
-    parser.add_argument("--lr", type=str, default=1e-4,
+    parser.add_argument("--lr", type=str, default=1e-3,
                         help="lr")
     parser.add_argument("--model_name", type=str, default='resnet50_cpcd',
                         help="name")
