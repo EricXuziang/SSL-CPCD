@@ -79,7 +79,7 @@ def get_argparser():
     parser.add_argument("--crop_val", action='store_true', default=False,
                         help='crop validation (default: False)')
     
-    parser.add_argument("--batch_size", type=int, default=16,
+    parser.add_argument("--batch_size", type=int, default=32,
                         help='batch size (default: 16)')
     parser.add_argument("--val_batch_size", type=int, default=16,
                         help='batch size for validation (default: 4)')
