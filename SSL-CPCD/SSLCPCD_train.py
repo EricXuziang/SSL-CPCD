@@ -139,12 +139,12 @@ def grouping(features_groupDis1, features_groupDis2, T):
 
     # group discriminative learning
     affnity1 = torch.mm(features_groupDis1, centroids2.t())
-    CLD_loss = criterion(affnity1.div_(T), cluster_label2)
+    CPCD_loss = criterion(affnity1.div_(T), cluster_label2)
 
     affnity2 = torch.mm(features_groupDis2, centroids1.t())
-    CLD_loss = (CLD_loss + criterion(affnity2.div_(T), cluster_label1))/2
-    # print(CLD_loss)
-    return CLD_loss
+    CPCD_loss = (CPCD_loss + criterion(affnity2.div_(T), cluster_label1))/2
+    # print(CPCD_loss)
+    return CPCD_loss
 
 
 net = Network().to(device)
@@ -187,8 +187,8 @@ for epoch in range(2000):
 
         q0 = nn.functional.normalize(output[0], dim=1)
         q1 = nn.functional.normalize(output[1], dim=1)
-        loss_cld= grouping(q0, q1, T=0.4)
-        loss= (1-Lambda) * loss + Lambda * loss_cld
+        loss_cpcd= grouping(q0, q1, T=0.4)
+        loss= (1-Lambda) * loss + Lambda * loss_cpcd
         loss.backward()
         optimizer.step()
 
