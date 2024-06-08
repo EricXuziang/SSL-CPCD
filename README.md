@@ -1,5 +1,7 @@
 ## SSL-CPCD: Self-supervised learning with composite pretext-class discrimination loss for improved generalisability in endoscopic image analaysis
 
+**Contributors** - [Ziang Xu](xuziang.uk@gmail.com) and [Sharib Ali](s.s.ali@leeds.ac.uk)
+
  ### Dataset details
  We explored three different datasets for our experiments on endoscopic image analysis as listed below:
  
@@ -17,11 +19,12 @@
  
  ### Training, test and generalisation scripts 
  
- #### 1. Training for SSL-CPCD:
+  #### 1. Training for SSL-CPCD:
   <pre><code>
   cd ./SSL-CPCD
   python SSLCPCD_train.py
   </code></pre>
+  
   ####  2. Training for downstream task:
   <pre><code>
   cd ./scriptDownstreamTaskTraining
@@ -29,6 +32,7 @@
   sh SSL_CPCD_finetune_polyp_detection_train.sh
   sh SSL_CPCD_finetune_polyp_segmentation_train.sh
   </code></pre>
+  
   ####  3. Test for each SSL-CPCD tasks
   <pre><code>
   cd ./test
@@ -37,7 +41,6 @@
   python test_segmentation.py
   </code></pre>
 
-  
 ## Citation
 If you find the code useful in your research, please consider citing it:
 
