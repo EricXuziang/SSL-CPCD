@@ -15,7 +15,6 @@
 
  A full training and test data list can also be downloaded [here](https://drive.google.com/drive/folders/1d0shq3lvgXfgxWqsJgbLjJ9_dXXbzXQA?usp=share_link). 
 
- [Checkpoint download for baseline vs our SSL-CPCD](https://drive.google.com/file/d/1vnjeoobxRUz7_eArGvk0awnuH_K41jS3/view?usp=share_link)
  
  ### Training, test and generalisation scripts 
  
